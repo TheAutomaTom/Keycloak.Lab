@@ -12,11 +12,16 @@
 
 ## Nugets:
 
-- Owin.Security.Keycloak-3
+- Keycloak.AuthServices
 
-	https://www.nuget.org/packages/Owin.Security.Keycloak-3
+	https://nikiforovall.github.io/keycloak-authorization-services-dotnet/configuration/configuration-keycloak.html#create-realm
 
 ## Technical References & Notes
+
+- Adding auth to a Swagger page
+   
+  https://swagger.io/docs/specification/authentication/
+
 - Keycloak on Docker takes about 1 full minute to spin up before the login page is available.  Watching the logs help indicate when it is prepared.
 
 
