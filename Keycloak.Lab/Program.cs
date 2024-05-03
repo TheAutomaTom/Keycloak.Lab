@@ -1,5 +1,7 @@
-
+using System.Data;
 using Keycloak.AuthServices.Authentication;
+using Keycloak.AuthServices.Authorization;
+using Keycloak.AuthServices.Sdk.Admin;
 using Microsoft.OpenApi.Models;
 
 namespace Keycloak.Lab
@@ -26,29 +28,46 @@ namespace Keycloak.Lab
       var builder = WebApplication.CreateBuilder(args);
 
       // Add services to the container.
-
-      if (env == "Development" || env == "Test") // Disable Auth's Https requirement.
+      builder.Services.AddKeycloakWebApiAuthentication(configuration, o =>
       {
-        builder.Services.AddKeycloakWebApiAuthentication(
-          configuration, (options) =>
-          {
-            options.RequireHttpsMetadata = false;
-            options.Audience = configuration.GetSection("Keycloak:Audience").Value;
-          }
-          );
-      }
-      else
+
+        if (env == "Development" || env == "Test") // Disable Auth's Https requirement.
+        {
+          o.RequireHttpsMetadata = false;
+
+        }
+        //options.Audience = configuration.GetSection("Keycloak:Audience").Value; // Is an audience required?
+      });
+      
+      builder.Services.AddAuthorization(options =>
       {
-        builder.Services.AddKeycloakWebApiAuthentication(
-          configuration, (options) =>
-          {
-            options.Audience = configuration.GetSection("Keycloak:Audience").Value;
-          }
-          );
-      }
+        options.AddPolicy("Reader", p =>
+        {
+          p.RequireRealmRoles("RealmReader");
+          //p.RequireResourceRoles("Reader");
+          //p.RequireRole("Reader");
+        });
+      })
+      .AddKeycloakAuthorization();
 
 
-      builder.Services.AddAuthorization();
+
+
+      builder.Services.AddKeycloakAdminHttpClient(configuration);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       builder.Services.AddControllers();
       // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
