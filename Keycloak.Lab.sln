@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34804.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keycloak.Lab", "z:\Keycloak.Lab\Keycloak.Lab\Keycloak.Lab.csproj", "{E260877A-6119-464A-B93F-20FC973CB799}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FDBF6AB4-E22A-4E5C-8089-E4E10A7A3AA9}"
 	ProjectSection(SolutionItems) = preProject
 		Keycloak.Lab.postman_collection.json = Keycloak.Lab.postman_collection.json
@@ -12,19 +10,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		realm-export.json = realm-export.json
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keycloak.Lab", "Keycloak.Lab\Keycloak.Lab.csproj", "{F16135EF-8322-4C21-8FB8-787D25AC5A95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E260877A-6119-464A-B93F-20FC973CB799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E260877A-6119-464A-B93F-20FC973CB799}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E260877A-6119-464A-B93F-20FC973CB799}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E260877A-6119-464A-B93F-20FC973CB799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F16135EF-8322-4C21-8FB8-787D25AC5A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F16135EF-8322-4C21-8FB8-787D25AC5A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F16135EF-8322-4C21-8FB8-787D25AC5A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F16135EF-8322-4C21-8FB8-787D25AC5A95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F16135EF-8322-4C21-8FB8-787D25AC5A95} = {FDBF6AB4-E22A-4E5C-8089-E4E10A7A3AA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9939B5A5-EB88-4580-B8E2-6B12076B6A82}
