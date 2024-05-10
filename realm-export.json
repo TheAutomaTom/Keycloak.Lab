@@ -47,6 +47,15 @@
   "roles": {
     "realm": [
       {
+        "id": "134921cf-ed6e-4c27-885e-3a841f0e9495",
+        "name": "DevUserRealmRole",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "925d2044-8f36-453f-b346-b80b1c544dd9",
+        "attributes": {}
+      },
+      {
         "id": "a1a0beed-8a94-43c6-8c09-4516a5218650",
         "name": "uma_authorization",
         "description": "${role_uma_authorization}",
@@ -299,7 +308,35 @@
           "attributes": {}
         }
       ],
-      "dev-client": [],
+      "dev-client": [
+        {
+          "id": "c9bc2a22-59ba-4bd5-a63e-68798c29f0c4",
+          "name": "Reader",
+          "description": "Can use GET endpoints",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38f3017b-ca7f-4adc-91f1-e0810c99a4db",
+          "attributes": {}
+        },
+        {
+          "id": "bd22d618-18da-45f2-b6d8-cf6e13a58233",
+          "name": "Admin",
+          "description": "Can use any type of endpoint",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38f3017b-ca7f-4adc-91f1-e0810c99a4db",
+          "attributes": {}
+        },
+        {
+          "id": "05ecabe2-66ab-4d39-b4f4-caeba9d320dc",
+          "name": "Writer",
+          "description": "Can use POST endpoints",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "38f3017b-ca7f-4adc-91f1-e0810c99a4db",
+          "attributes": {}
+        }
+      ],
       "security-admin-console": [],
       "admin-cli": [],
       "account-console": [],
@@ -404,7 +441,17 @@
       ]
     }
   },
-  "groups": [],
+  "groups": [
+    {
+      "id": "c9f4c745-14b4-466f-ba4b-711e16b733d4",
+      "name": "DevWriterGroup",
+      "path": "/DevWriterGroup",
+      "subGroups": [],
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {}
+    }
+  ],
   "defaultRole": {
     "id": "4029ac3e-5951-47fe-9122-a60ac0396b05",
     "name": "default-roles-dev-lab",
@@ -464,6 +511,14 @@
     }
   ],
   "clientScopeMappings": {
+    "dev-client": [
+      {
+        "clientScope": "DevClientScope",
+        "roles": [
+          "Reader"
+        ]
+      }
+    ],
     "account": [
       {
         "client": "account-console",
@@ -694,6 +749,7 @@
         "acr",
         "profile",
         "roles",
+        "DevClientScope",
         "email"
       ],
       "optionalClientScopes": [
@@ -1343,6 +1399,34 @@
           }
         }
       ]
+    },
+    {
+      "id": "064b971f-5b9f-4fc9-acbd-4975ff74795b",
+      "name": "DevClientScope",
+      "description": "",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false",
+        "gui.order": "",
+        "consent.screen.text": ""
+      },
+      "protocolMappers": [
+        {
+          "id": "3c18f8fd-2863-4728-b434-a0f0dc0a668a",
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "lightweight.claim": "false",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
     }
   ],
   "defaultDefaultClientScopes": [
@@ -1351,7 +1435,8 @@
     "email",
     "roles",
     "web-origins",
-    "acr"
+    "acr",
+    "DevClientScope"
   ],
   "defaultOptionalClientScopes": [
     "offline_access",
