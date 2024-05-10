@@ -1,7 +1,7 @@
 using System.Data;
 using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
-using Keycloak.AuthServices.Sdk.Admin;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 namespace Keycloak.Lab
@@ -27,33 +27,31 @@ namespace Keycloak.Lab
 
       var builder = WebApplication.CreateBuilder(args);
 
+
       // Add services to the container.
       builder.Services.AddKeycloakWebApiAuthentication(configuration, o =>
       {
 
-        if (env == "Development" || env == "Test") // Disable Auth's Https requirement.
+        if (env == "Development" || env == "Test") 
         {
-          o.RequireHttpsMetadata = false;
-
+          o.RequireHttpsMetadata = false; // Disable typical Https requirement.
         }
-        //options.Audience = configuration.GetSection("Keycloak:Audience").Value; // Is an audience required?
+        //options.Audience = configuration.GetSection("Keycloak:audience").Value; // Is an audience required?
       });
-      
+
+
       builder.Services.AddAuthorization(options =>
       {
         options.AddPolicy("Reader", p =>
         {
-          p.RequireRealmRoles("RealmReader");
-          //p.RequireResourceRoles("Reader");
-          //p.RequireRole("Reader");
+          // p.RequireRealmRoles("RealmReader"); // Is a realm role always required?
+          p.RequireResourceRoles("Reader");
+          // p.RequireRole("Reader"); // Is this redundant?  It's in the samples.
         });
       })
-      .AddKeycloakAuthorization();
+      .AddKeycloakAuthorization(configuration);
 
 
-
-
-      builder.Services.AddKeycloakAdminHttpClient(configuration);
 
 
 

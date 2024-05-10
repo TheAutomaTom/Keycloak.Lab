@@ -14,7 +14,7 @@
 
 - Keycloak.AuthServices
 
-	https://nikiforovall.github.io/keycloak-authorization-services-dotnet/configuration/configuration-keycloak.html#create-realm
+	https://nikiforovall.github.io/keycloak-authorization-services-dotnet/configuration/configuration-keycloak.html
 
 ## Technical References & Notes
 
