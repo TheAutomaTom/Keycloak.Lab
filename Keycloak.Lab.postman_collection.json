@@ -10,14 +10,14 @@
 			"name": "Forecast Api",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "ReadersOnly",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3bkZvU21xVEFGaE9EZ0NXNmxyQ3VFS0hOUEc5U2JIdDZYclQ0aFhHYUcwIn0.eyJleHAiOjE3MTQ3NTE4NTQsImlhdCI6MTcxNDc1MTU1NCwianRpIjoiYWFjZDg4MzktZjYwMy00MGRmLTgxNTgtNDMyNDJmNTgxOTNmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9kZXYtbGFiIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6Ijc4OTAzZjA4LWM3YTktNDAzNS05MzM1LTkzNDgwMDgyZmNjZCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImRldi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiZGMwYjIzMTktYmY2OC00ZDU5LTgwY2UtMzJiZjBhNDk1MDY1IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1kZXYtbGFiIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImRjMGIyMzE5LWJmNjgtNGQ1OS04MGNlLTMyYmYwYTQ5NTA2NSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiRGV2ZXJldXggVXNlciIsInByZWZlcnJlZF91c2VybmFtZSI6ImRldi11c2VyIiwiZ2l2ZW5fbmFtZSI6IkRldmVyZXV4IiwiZmFtaWx5X25hbWUiOiJVc2VyIiwiZW1haWwiOiJkZXYudXNlckBlbWFpbC5laWVpbyJ9.VcyVPszxIJ1kS6vwWsh-pZneJttQHMJF2t1hnyhsLKfQk30DmrHWFf9sxT-9OMsRR4xIjMZTG_hCsCFUPAmAGg3K4aTDep4_Xcjde2xJxqfyGz3QBrFk3GbYBHuysUJcZepel5z8q2k_rq-SGf8eHfSlD7DvwO3gpxPP0DXvmq751P8bTy8pDmbI5aZF8t4vavVzMlyYOA6LcUIlcxs5TpPFB8ylX_FLg0kflOx0wVe5FNxsPOEaT4bH2CPrhg0qh4oEj2nU3AzCYIdB_Ip43L3jdJVcBgi6I-Om0hS2WrzIN1jbE3Fog9EPO3UzQw3OGrvERvLeHvwzh0JSNSEKEA",
+									"value": "{{access_token}}",
 									"type": "string"
 								}
 							]
@@ -25,14 +25,45 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5198/WeatherForecast",
+							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5198",
 							"path": [
-								"WeatherForecast"
+								"AuthRolesTest",
+								"ReadersOnly"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "WritersOnly",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"AuthRolesTest",
+								"ReadersOnly"
 							]
 						}
 					},
@@ -44,7 +75,7 @@
 			"name": "Auth Api",
 			"item": [
 				{
-					"name": "Request Token",
+					"name": "Get Reader Token",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -52,24 +83,34 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
 									"key": "client_id",
-									"value": "example-client",
+									"value": "dev-client",
 									"type": "text"
 								},
 								{
 									"key": "client_secret",
-									"value": "UmSa9v4nbfxTrEMLRdfv21H19RJ0SyNi",
+									"value": "6KjnpbA0Qlf2zLS6pVpiWPSKlLL5ZwHk",
 									"type": "text"
 								},
 								{
-									"key": "grant_type",
-									"value": "client_credentials",
+									"key": "username",
+									"value": "dev-reader",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "devuser",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -77,7 +118,166 @@
 							"port": "8080",
 							"path": [
 								"realms",
-								"master",
+								"dev-lab",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Admin Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "dev-client",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "6KjnpbA0Qlf2zLS6pVpiWPSKlLL5ZwHk",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "dev-reader",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "devuser",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"realms",
+								"dev-lab",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Writer Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "dev-client",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "6KjnpbA0Qlf2zLS6pVpiWPSKlLL5ZwHk",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "dev-writer",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "devuser",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"realms",
+								"dev-lab",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Read-and-Write Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "dev-client",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "6KjnpbA0Qlf2zLS6pVpiWPSKlLL5ZwHk",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "dev-writer",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "devuser",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"realms",
+								"dev-lab",
 								"protocol",
 								"openid-connect",
 								"token"
@@ -87,6 +287,28 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
