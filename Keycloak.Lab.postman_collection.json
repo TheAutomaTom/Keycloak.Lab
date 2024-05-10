@@ -286,6 +286,28 @@
 					},
 					"response": []
 				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.collectionVariables.set(\"access_token\", pm.response.json().access_token);"
+						]
+					}
+				}
 			]
 		}
 	],
@@ -315,6 +337,10 @@
 		{
 			"key": "access_token",
 			"value": "xxx"
+		},
+		{
+			"key": "Token-Source",
+			"value": ""
 		}
 	]
 }
