@@ -40,7 +40,67 @@
 					"response": []
 				},
 				{
-					"name": "WritersOnly",
+					"name": "WritersOrAdmins",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"AuthRolesTest",
+								"ReadersOnly"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdminsOnly",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"AuthRolesTest",
+								"ReadersOnly"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ReadAndWriters",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -128,7 +188,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Admin Token",
+					"name": "Get Writer Token",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -152,7 +212,7 @@
 								},
 								{
 									"key": "username",
-									"value": "dev-reader",
+									"value": "dev-writer",
 									"type": "text"
 								},
 								{
@@ -181,7 +241,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Writer Token",
+					"name": "Get Admin Token",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -205,7 +265,7 @@
 								},
 								{
 									"key": "username",
-									"value": "dev-writer",
+									"value": "dev-reader",
 									"type": "text"
 								},
 								{

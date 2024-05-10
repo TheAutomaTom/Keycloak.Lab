@@ -32,7 +32,7 @@ namespace Keycloak.Lab
       builder.Services.AddKeycloakWebApiAuthentication(configuration, o =>
       {
 
-        if (env == "Development" || env == "Test") 
+        if (env == "Development" || env == "Test")
         {
           o.RequireHttpsMetadata = false; // Disable typical Https requirement.
         }
@@ -42,30 +42,24 @@ namespace Keycloak.Lab
 
       builder.Services.AddAuthorization(options =>
       {
-        options.AddPolicy("Reader", p =>
-        {
-          // p.RequireRealmRoles("RealmReader"); // Is a realm role always required?
-          p.RequireResourceRoles("Reader");
-          // p.RequireRole("Reader"); // Is this redundant?  It's in the samples.
+
+        options.AddPolicy("Reader", p => { p.RequireResourceRoles("Reader"); });
+        options.AddPolicy("Reader", p => { p.RequireResourceRoles("Reader"); });
+        options.AddPolicy("Writer", p => { p.RequireResourceRoles("Writer"); });
+        options.AddPolicy("Admin", p => { p.RequireResourceRoles("Admin"); });
+
+        
+        options.AddPolicy("AdminOrWriters", p => { p.RequireResourceRoles("Admin" /* OR REQUIRE */, "Writer"); }); 
+
+
+        options.AddPolicy("ReadAndWriters", p => { 
+          p.RequireResourceRoles("Reader" );
+          /* AND REQUIRE */
+          p.RequireResourceRoles("Writer"); 
         });
+
       })
       .AddKeycloakAuthorization(configuration);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       builder.Services.AddControllers();
       // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -85,17 +79,17 @@ namespace Keycloak.Lab
         });
         option.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
-          {
-            new OpenApiSecurityScheme
             {
-              Reference = new OpenApiReference
+              new OpenApiSecurityScheme
               {
-                Type=ReferenceType.SecurityScheme,
-                Id="Bearer"
-              }
-            },
-            new string[]{}
-          }
+                Reference = new OpenApiReference
+                {
+                  Type=ReferenceType.SecurityScheme,
+                  Id="Bearer"
+                }
+              },
+              new string[]{}
+            }
         });
       });
 

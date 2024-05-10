@@ -22,18 +22,26 @@ namespace Keycloak.Lab.Controllers
       return Ok($"{nameof(ReadersOnly)} worked!");
     }
 
-    [Authorize(Policy ="Writer")]
+    [Authorize(Policy = "AdminOrWriters")]
     [HttpPost]
-    public IActionResult WritersOnly()
+    public IActionResult AdminOrWriters()
     {
-      return Ok($"{nameof(WritersOnly)} worked!");
+      return Ok($"{nameof(AdminOrWriters)} worked!");
     }
 
     [Authorize(Policy ="Admin")]
-    [HttpDelete]
+    [HttpPut]
     public IActionResult AdminsOnly()
     {
       return Ok($"{nameof(AdminsOnly)} worked!");
+    }
+
+    [Authorize(Policy = "ReadAndWriters")]
+
+    [HttpDelete]
+    public IActionResult ReadAndWriters()
+    {
+      return Ok($"{nameof(ReadAndWriters)} worked!");
     }
   }
 }
