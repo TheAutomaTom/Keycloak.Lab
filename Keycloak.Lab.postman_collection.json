@@ -52,10 +52,10 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
+							"raw": "http://localhost:5198/AuthRolesTest/AdminOrWriters",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -63,7 +63,7 @@
 							"port": "5198",
 							"path": [
 								"AuthRolesTest",
-								"ReadersOnly"
+								"AdminOrWriters"
 							]
 						}
 					},
@@ -82,10 +82,10 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
+							"raw": "http://localhost:5198/AuthRolesTest/AdminsOnly",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -93,7 +93,7 @@
 							"port": "5198",
 							"path": [
 								"AuthRolesTest",
-								"ReadersOnly"
+								"AdminsOnly"
 							]
 						}
 					},
@@ -112,10 +112,10 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
+							"raw": "http://localhost:5198/AuthRolesTest/ReadAndWriters",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -123,7 +123,7 @@
 							"port": "5198",
 							"path": [
 								"AuthRolesTest",
-								"ReadersOnly"
+								"ReadAndWriters"
 							]
 						}
 					},
@@ -132,10 +132,22 @@
 			]
 		},
 		{
-			"name": "Auth Api",
+			"name": "Auth Tokens",
 			"item": [
 				{
 					"name": "Get Reader Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"Token-Source\", \"Reader\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -145,6 +157,11 @@
 								{
 									"key": "grant_type",
 									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "realm",
+									"value": "dev-lab",
 									"type": "text"
 								},
 								{
@@ -170,15 +187,13 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/realms/{{Keycloak-Realm}}/protocol/openid-connect/token",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "8080",
 							"path": [
 								"realms",
-								"dev-lab",
+								"{{Keycloak-Realm}}",
 								"protocol",
 								"openid-connect",
 								"token"
@@ -189,6 +204,18 @@
 				},
 				{
 					"name": "Get Writer Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"Token-Source\", \"Writer\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -198,6 +225,11 @@
 								{
 									"key": "grant_type",
 									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "realm",
+									"value": "dev-lab",
 									"type": "text"
 								},
 								{
@@ -223,15 +255,13 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/realms/{{Keycloak-Realm}}/protocol/openid-connect/token",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "8080",
 							"path": [
 								"realms",
-								"dev-lab",
+								"{{Keycloak-Realm}}",
 								"protocol",
 								"openid-connect",
 								"token"
@@ -242,6 +272,18 @@
 				},
 				{
 					"name": "Get Admin Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"Token-Source\", \"Admin\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -251,6 +293,11 @@
 								{
 									"key": "grant_type",
 									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "realm",
+									"value": "dev-lab",
 									"type": "text"
 								},
 								{
@@ -265,7 +312,7 @@
 								},
 								{
 									"key": "username",
-									"value": "dev-reader",
+									"value": "dev-admin",
 									"type": "text"
 								},
 								{
@@ -276,15 +323,13 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/realms/{{Keycloak-Realm}}/protocol/openid-connect/token",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "8080",
 							"path": [
 								"realms",
-								"dev-lab",
+								"{{Keycloak-Realm}}",
 								"protocol",
 								"openid-connect",
 								"token"
@@ -295,6 +340,18 @@
 				},
 				{
 					"name": "Get Read-and-Write Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"Token-Source\", \"Read-and-writer\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -304,6 +361,11 @@
 								{
 									"key": "grant_type",
 									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "realm",
+									"value": "dev-lab",
 									"type": "text"
 								},
 								{
@@ -318,7 +380,7 @@
 								},
 								{
 									"key": "username",
-									"value": "dev-writer",
+									"value": "dev-read-and-write",
 									"type": "text"
 								},
 								{
@@ -329,15 +391,13 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8080/realms/dev-lab/protocol/openid-connect/token",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/realms/{{Keycloak-Realm}}/protocol/openid-connect/token",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "8080",
 							"path": [
 								"realms",
-								"dev-lab",
+								"{{Keycloak-Realm}}",
 								"protocol",
 								"openid-connect",
 								"token"
@@ -367,6 +427,277 @@
 							"pm.collectionVariables.set(\"access_token\", pm.response.json().access_token);"
 						]
 					}
+				}
+			]
+		},
+		{
+			"name": "Auth Users",
+			"item": [
+				{
+					"name": "Register New User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\": \"app_user_test\",\r\n\t\"firstName\": \"app_user_firstname\",\r\n\t\"lastName\": \"app_user_lastname\",\r\n\t\"email\": \"app_user@test.fr\",\r\n\t\"emailVerified\": true,\r\n\t\"enabled\": true,\r\n\t\"credentials\": [\r\n\t\t{\r\n\t\t\t\"temporary\": false,\r\n\t\t\t\"type\": \"password\",\r\n\t\t\t\"value\": \"mypassword\"\r\n\t\t}\r\n\t]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/clients/{{Keycloak-UUID-dev-lab}}/roles",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"clients",
+								"{{Keycloak-UUID-dev-lab}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role Details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\": \"app_user_test\",\r\n\t\"firstName\": \"app_user_firstname\",\r\n\t\"lastName\": \"app_user_lastname\",\r\n\t\"email\": \"app_user@test.fr\",\r\n\t\"emailVerified\": true,\r\n\t\"enabled\": true,\r\n\t\"credentials\": [\r\n\t\t{\r\n\t\t\t\"temporary\": false,\r\n\t\t\t\"type\": \"password\",\r\n\t\t\t\"value\": \"mypassword\"\r\n\t\t}\r\n\t]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/clients/{{Keycloak-UUID-dev-lab}}/roles/Reader",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"clients",
+								"{{Keycloak-UUID-dev-lab}}",
+								"roles",
+								"Reader"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "dev-reader",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Role to User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id\": \"c9bc2a22-59ba-4bd5-a63e-68798c29f0c4\",\r\n        \"name\": \"Reader\",\r\n        \"description\": \"Can use GET endpoints\",\r\n        \"composite\": false,\r\n        \"clientRole\": true,\r\n        \"containerId\": \"38f3017b-ca7f-4adc-91f1-e0810c99a4db\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users/{{Keycloak-UUID-app_user_test}}/role-mappings/clients/{{Keycloak-UUID-dev-lab}}",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users",
+								"{{Keycloak-UUID-app_user_test}}",
+								"role-mappings",
+								"clients",
+								"{{Keycloak-UUID-dev-lab}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Count",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users/count",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users",
+								"count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Client-admin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"Keycloak-Admin-Token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "dev-lab-admin-client",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "u5u4R9WqgqrNJq1YPyURrkizOt7Rr5J5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/realms/master/protocol/openid-connect/token",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"realms",
+								"master",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -401,6 +732,36 @@
 		{
 			"key": "Token-Source",
 			"value": ""
+		},
+		{
+			"key": "Keycloak-Url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "Keycloak-Realm",
+			"value": "dev-lab",
+			"type": "string"
+		},
+		{
+			"key": "Admin-Token",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpdmJTdkl3Y0VBbmQwR3RHOFhISjlrWS1FZ05LZFQtT2NYUjM2bzJXcWhrIn0.eyJleHAiOjE3MTUzODkyMDQsImlhdCI6MTcxNTM4OTE0NCwianRpIjoiY2IwOGM2NDYtYTE4My00ZDFjLWE4MzgtMThjZTZlNjhmMzU5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9tYXN0ZXIiLCJhdWQiOlsiVGVzdC1SZWFsbS1yZWFsbSIsIkNsZWFuLUNydWQtcmVhbG0iLCJkZXYtbGFiLXJlYWxtIiwibWFzdGVyLXJlYWxtIiwiYWNjb3VudCJdLCJzdWIiOiJhNWI5OTBlZS05NTIxLTQ3NGYtYmM2Ny04MDA0OTA5ZWM0MjkiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJkZXYtbGFiLWFkbWluLWNsaWVudCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImNyZWF0ZS1yZWFsbSIsImRlZmF1bHQtcm9sZXMtbWFzdGVyIiwib2ZmbGluZV9hY2Nlc3MiLCJhZG1pbiIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiVGVzdC1SZWFsbS1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsInZpZXctcmVhbG0iLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwiQ2xlYW4tQ3J1ZC1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsInZpZXctcmVhbG0iLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwiZGV2LWxhYi1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LXJlYWxtIiwidmlldy1pZGVudGl0eS1wcm92aWRlcnMiLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwibWFzdGVyLXJlYWxtIjp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwiY3JlYXRlLWNsaWVudCIsIm1hbmFnZS11c2VycyIsInF1ZXJ5LXJlYWxtcyIsInZpZXctYXV0aG9yaXphdGlvbiIsInF1ZXJ5LWNsaWVudHMiLCJxdWVyeS11c2VycyIsIm1hbmFnZS1ldmVudHMiLCJtYW5hZ2UtcmVhbG0iLCJ2aWV3LWV2ZW50cyIsInZpZXctdXNlcnMiLCJ2aWV3LWNsaWVudHMiLCJtYW5hZ2UtYXV0aG9yaXphdGlvbiIsIm1hbmFnZS1jbGllbnRzIiwicXVlcnktZ3JvdXBzIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJjbGllbnRIb3N0IjoiMTcyLjE5LjAuMSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LWRldi1sYWItYWRtaW4tY2xpZW50IiwiY2xpZW50QWRkcmVzcyI6IjE3Mi4xOS4wLjEiLCJjbGllbnRfaWQiOiJkZXYtbGFiLWFkbWluLWNsaWVudCJ9.dWFjRVTdk3xOeNZz4dw2d9-jiyMWKnN_IBqJfsjAXlyFCxQmvzX7jf9sfAqVqzX_O4SBnLqnNCFEhaQFBMp_ARDNeHGLS7r86tVUYq_pIykctoai71arJGH6n1A2w_bMGKPK_4TGjB9INt0anMarZruJkkxoZLAo-rqQHa2cxN83jBTR8FeIFnrRCcklvW_f9n8V9BU3W4UcaTPPrd53YhXqC-qR1sC5AhOt9OdbdHw6_bUxim5XhjgDnhFpk07iC_kG3zzEnWMzfWPOqb_hX0plJlFp4chDR8X3Vq6lHIUwssoxo43mc-OscjPL7SjWqUqwR3r_bcP0ZJupw1kd6g",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "Keycloak-Admin-Token",
+			"value": ""
+		},
+		{
+			"key": "Keycloak-UUID-dev-lab",
+			"value": "38f3017b-ca7f-4adc-91f1-e0810c99a4db",
+			"type": "string"
+		},
+		{
+			"key": "Keycloak-UUID-app_user_test",
+			"value": "02ce98c9-fd70-4b6a-978a-d0ba3df4390f",
+			"type": "string"
 		}
 	]
 }
