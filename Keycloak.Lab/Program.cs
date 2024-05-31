@@ -46,10 +46,8 @@ namespace Keycloak.Lab
         options.AddPolicy("Reader", p => { p.RequireResourceRoles("Reader"); });
         options.AddPolicy("Writer", p => { p.RequireResourceRoles("Writer"); });
         options.AddPolicy("Admin", p => { p.RequireResourceRoles("Admin"); });
-
-        
+                
         options.AddPolicy("AdminOrWriters", p => { p.RequireResourceRoles("Admin" /* OR REQUIRE */, "Writer"); }); 
-
 
         options.AddPolicy("ReadAndWriters", p => { 
           p.RequireResourceRoles("Reader" );

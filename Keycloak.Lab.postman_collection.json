@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Forecast Api",
+			"name": "Policy Tests",
 			"item": [
 				{
 					"name": "ReadersOnly",
@@ -434,7 +434,7 @@
 			"name": "Auth Users",
 			"item": [
 				{
-					"name": "Register New User",
+					"name": "Create New User",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -467,6 +467,134 @@
 								"realms",
 								"{{Keycloak-Realm}}",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users of Realm",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users?Username=wri",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users"
+							],
+							"query": [
+								{
+									"key": "first",
+									"value": "2",
+									"description": "Pagination offset",
+									"disabled": true
+								},
+								{
+									"key": "max",
+									"value": "2",
+									"description": "Maximum results size (defaults to 100)",
+									"disabled": true
+								},
+								{
+									"key": "Username",
+									"value": "wri",
+									"description": "String contained in a username"
+								},
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "emailVerified",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "enabled",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "exact",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "firstName",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "lastName",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": null,
+									"description": "A String contained in username, first or last name, or email. Default search behavior is prefix-based (e.g., foo or foo*). Use foo for infix search and &quot;foo&quot; for exact search.",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Role to User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id\": \"c9bc2a22-59ba-4bd5-a63e-68798c29f0c4\",\r\n        \"name\": \"Reader\",\r\n        \"description\": \"Can use GET endpoints\",\r\n        \"composite\": false,\r\n        \"clientRole\": true,\r\n        \"containerId\": \"38f3017b-ca7f-4adc-91f1-e0810c99a4db\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users/{{Keycloak-UUID-app_user_test}}/role-mappings/clients/{{Keycloak-UUID-dev-lab}}",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users",
+								"{{Keycloak-UUID-app_user_test}}",
+								"role-mappings",
+								"clients",
+								"{{Keycloak-UUID-dev-lab}}"
 							]
 						}
 					},
@@ -563,84 +691,6 @@
 									"value": "dev-reader",
 									"disabled": true
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Role to User",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Keycloak-Admin-Token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "[\r\n    {\r\n        \"id\": \"c9bc2a22-59ba-4bd5-a63e-68798c29f0c4\",\r\n        \"name\": \"Reader\",\r\n        \"description\": \"Can use GET endpoints\",\r\n        \"composite\": false,\r\n        \"clientRole\": true,\r\n        \"containerId\": \"38f3017b-ca7f-4adc-91f1-e0810c99a4db\"\r\n    }\r\n]",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users/{{Keycloak-UUID-app_user_test}}/role-mappings/clients/{{Keycloak-UUID-dev-lab}}",
-							"host": [
-								"{{Keycloak-Url}}"
-							],
-							"path": [
-								"admin",
-								"realms",
-								"{{Keycloak-Realm}}",
-								"users",
-								"{{Keycloak-UUID-app_user_test}}",
-								"role-mappings",
-								"clients",
-								"{{Keycloak-UUID-dev-lab}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User Count",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Keycloak-Admin-Token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
-						"url": {
-							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users/count",
-							"host": [
-								"{{Keycloak-Url}}"
-							],
-							"path": [
-								"admin",
-								"realms",
-								"{{Keycloak-Realm}}",
-								"users",
-								"count"
 							]
 						}
 					},
