@@ -29,29 +29,27 @@
   https://swagger.io/docs/specification/authentication/
 
 
-- Setup notes 
+### Setup notes 
 
-	| **Keycloak**													|
-	|	--- 														|
-	| **Realm**	| Name		| `dev-lab`								|
-	| **Client**| Id		| `dev-client`							|
-	|	 		| Name		| `Dev Client`							|
-	|	 		| Secret	| `6KjnpbA0Qlf2zLS6pVpiWPSKlLL5ZwHk`	|
-	| **User 1**| Name		| `dev-user`							|
-	|	 		| Password	| `devuser`								|
-	|	 		| Roles	    | none								    |
-	| **User 2**| Name		| `dev-reader`							|
-	|	 		| Password	| `devuser`								|
-	|	 		| Roles	    | `Reader`							    |
-	| **User 3**| Name		| `dev-writer`							|
-	|	 		| Password	| `devuser`								|
-	|	 		| Roles	    | `Writer`							    |
-	| **User 4**| Name		| `dev-read-and-write`					|
-	|	 		| Password	| `devuser`								|
-	|	 		| Roles	    | `Reader`, `Writer`				    |
-	| **User 5**| Name		| `dev-admin`							|
-	|	 		| Password	| `devuser`								|
-	|	 		| Roles	    | `Admin`							    |
-
-
+| Category  | Item			| Value			|
+| --------- | --------- | --------- |
+| Realm			|	Name			| `dev-lab` |
+| Client| Id		| `dev-client`							|
+|	 		| Name		| `Dev Client`							|
+|	 		| Secret	| `6KjnpbA0Qlf2zLS6pVpiWPSKlLL5ZwHk`	|
+| User 1| Name		| `dev-user`							|
+|	 		| Password	| `devuser`								|
+|	 		| Roles	    | none								    |
+| User 2| Name		| `dev-reader`							|
+|	 		| Password	| `devuser`								|
+|	 		| Roles	    | `Reader`							    |
+| User 3| Name		| `dev-writer`							|
+|	 		| Password	| `devuser`								|
+|	 		| Roles	    | `Writer`							    |
+| User 4| Name		| `dev-read-and-write`					|
+|	 		| Password	| `devuser`								|
+|	 		| Roles	    | `Reader`, `Writer`				    |
+| User 5| Name		| `dev-admin`							|
+|	 		| Password	| `devuser`								|
+|	 		| Roles	    | `Admin`							    |
 
