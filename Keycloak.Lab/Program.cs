@@ -32,11 +32,10 @@ namespace Keycloak.Lab
       builder.Services.AddKeycloakWebApiAuthentication(configuration, o =>
       {
 
-        if (env == "Development" || env == "Test")
+        if (env == "Development" || env == "Test" || env == "Staging")
         {
           o.RequireHttpsMetadata = false; // Disable typical Https requirement.
         }
-        //options.Audience = configuration.GetSection("Keycloak:audience").Value; // Is an audience required?
       });
 
 
@@ -46,12 +45,14 @@ namespace Keycloak.Lab
         options.AddPolicy("Reader", p => { p.RequireResourceRoles("Reader"); });
         options.AddPolicy("Writer", p => { p.RequireResourceRoles("Writer"); });
         options.AddPolicy("Admin", p => { p.RequireResourceRoles("Admin"); });
-                
-        options.AddPolicy("AdminOrWriters", p => { p.RequireResourceRoles("Admin" /* OR REQUIRE */, "Writer"); }); 
+          
+        // Example of "This OR That"
+        options.AddPolicy("AdminOrWriters", p => {  
+          p.RequireResourceRoles("Admin", "Writer"); });
 
-        options.AddPolicy("ReadAndWriters", p => { 
+				// Example of "This AND That"
+				options.AddPolicy("ReadAndWriters", p => { 
           p.RequireResourceRoles("Reader" );
-          /* AND REQUIRE */
           p.RequireResourceRoles("Writer"); 
         });
 

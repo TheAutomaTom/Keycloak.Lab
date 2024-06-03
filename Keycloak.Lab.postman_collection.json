@@ -7,17 +7,116 @@
 	},
 	"item": [
 		{
-			"name": "Policy Tests",
+			"name": "Keycloak User Management",
 			"item": [
 				{
-					"name": "ReadersOnly",
+					"name": "Get Client-admin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"Keycloak-Admin-Token\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "dev-lab-admin-client",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "u5u4R9WqgqrNJq1YPyURrkizOt7Rr5J5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/realms/master/protocol/openid-connect/token",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"realms",
+								"master",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New User",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{access_token}}",
+									"value": "{{Keycloak-Admin-Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\": \"app_user_test3\",\r\n\t\"firstName\": \"app_user_firstname3\",\r\n\t\"lastName\": \"app_user_lastname3\",\r\n\t\"email\": \"app_user3@test.fr\",\r\n\t\"emailVerified\": true,\r\n\t\"enabled\": true,\r\n\t\"credentials\": [\r\n\t\t{\r\n\t\t\t\"temporary\": false,\r\n\t\t\t\"type\": \"password\",\r\n\t\t\t\"value\": \"mypassword\"\r\n\t\t}\r\n\t]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users",
+							"host": [
+								"{{Keycloak-Url}}"
+							],
+							"path": [
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "and",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search for User(s) of Realm",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Keycloak-Admin-Token}}",
 									"type": "string"
 								}
 							]
@@ -25,105 +124,209 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5198/AuthRolesTest/ReadersOnly",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users?Username=wri",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "5198",
 							"path": [
-								"AuthRolesTest",
-								"ReadersOnly"
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users"
+							],
+							"query": [
+								{
+									"key": "first",
+									"value": "2",
+									"description": "Pagination offset",
+									"disabled": true
+								},
+								{
+									"key": "max",
+									"value": "2",
+									"description": "Maximum results size (defaults to 100)",
+									"disabled": true
+								},
+								{
+									"key": "Username",
+									"value": "wri",
+									"description": "String contained in a username"
+								},
+								{
+									"key": "email",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "emailVerified",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "enabled",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "exact",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "firstName",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "lastName",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": null,
+									"description": "A String contained in username, first or last name, or email. Default search behavior is prefix-based (e.g., foo or foo*). Use foo for infix search and &quot;foo&quot; for exact search.",
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "WritersOrAdmins",
+					"name": "Add Role to User",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{access_token}}",
+									"value": "{{Keycloak-Admin-Token}}",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id\": \"c9bc2a22-59ba-4bd5-a63e-68798c29f0c4\",\r\n        \"name\": \"Reader\",\r\n        \"description\": \"Can use GET endpoints\",\r\n        \"composite\": false,\r\n        \"clientRole\": true,\r\n        \"containerId\": \"38f3017b-ca7f-4adc-91f1-e0810c99a4db\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:5198/AuthRolesTest/AdminOrWriters",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users/{{Keycloak-UUID-app_user_test}}/role-mappings/clients/{{Keycloak-UUID-dev-lab}}",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "5198",
 							"path": [
-								"AuthRolesTest",
-								"AdminOrWriters"
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"users",
+								"{{Keycloak-UUID-app_user_test}}",
+								"role-mappings",
+								"clients",
+								"{{Keycloak-UUID-dev-lab}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "AdminsOnly",
+					"name": "Get Roles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{access_token}}",
+									"value": "{{Keycloak-Admin-Token}}",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:5198/AuthRolesTest/AdminsOnly",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/clients/{{Keycloak-UUID-dev-lab}}/roles",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "5198",
 							"path": [
-								"AuthRolesTest",
-								"AdminsOnly"
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"clients",
+								"{{Keycloak-UUID-dev-lab}}",
+								"roles"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "ReadAndWriters",
+					"name": "Get Role Details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{access_token}}",
+									"value": "{{Keycloak-Admin-Token}}",
 									"type": "string"
 								}
 							]
 						},
-						"method": "DELETE",
+						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\": \"app_user_test\",\r\n\t\"firstName\": \"app_user_firstname\",\r\n\t\"lastName\": \"app_user_lastname\",\r\n\t\"email\": \"app_user@test.fr\",\r\n\t\"emailVerified\": true,\r\n\t\"enabled\": true,\r\n\t\"credentials\": [\r\n\t\t{\r\n\t\t\t\"temporary\": false,\r\n\t\t\t\"type\": \"password\",\r\n\t\t\t\"value\": \"mypassword\"\r\n\t\t}\r\n\t]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:5198/AuthRolesTest/ReadAndWriters",
-							"protocol": "http",
+							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/clients/{{Keycloak-UUID-dev-lab}}/roles/Reader",
 							"host": [
-								"localhost"
+								"{{Keycloak-Url}}"
 							],
-							"port": "5198",
 							"path": [
-								"AuthRolesTest",
-								"ReadAndWriters"
+								"admin",
+								"realms",
+								"{{Keycloak-Realm}}",
+								"clients",
+								"{{Keycloak-UUID-dev-lab}}",
+								"roles",
+								"Reader"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "dev-reader",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -132,7 +335,7 @@
 			]
 		},
 		{
-			"name": "Auth Tokens",
+			"name": "Get Tokens",
 			"item": [
 				{
 					"name": "Get Reader Token",
@@ -431,56 +634,17 @@
 			]
 		},
 		{
-			"name": "Auth Users",
+			"name": "Api Policy/Role Tests",
 			"item": [
 				{
-					"name": "Create New User",
+					"name": "Readers Only",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{Keycloak-Admin-Token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\t\"username\": \"app_user_test\",\r\n\t\"firstName\": \"app_user_firstname\",\r\n\t\"lastName\": \"app_user_lastname\",\r\n\t\"email\": \"app_user@test.fr\",\r\n\t\"emailVerified\": true,\r\n\t\"enabled\": true,\r\n\t\"credentials\": [\r\n\t\t{\r\n\t\t\t\"temporary\": false,\r\n\t\t\t\"type\": \"password\",\r\n\t\t\t\"value\": \"mypassword\"\r\n\t\t}\r\n\t]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users",
-							"host": [
-								"{{Keycloak-Url}}"
-							],
-							"path": [
-								"admin",
-								"realms",
-								"{{Keycloak-Realm}}",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Users of Realm",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Keycloak-Admin-Token}}",
+									"value": "{{access_token}}",
 									"type": "string"
 								}
 							]
@@ -488,262 +652,105 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users?Username=wri",
+							"raw": "https://localhost:32770/AuthRolesTest/ReadersOnly",
+							"protocol": "https",
 							"host": [
-								"{{Keycloak-Url}}"
+								"localhost"
 							],
+							"port": "32770",
 							"path": [
-								"admin",
-								"realms",
-								"{{Keycloak-Realm}}",
-								"users"
-							],
-							"query": [
-								{
-									"key": "first",
-									"value": "2",
-									"description": "Pagination offset",
-									"disabled": true
-								},
-								{
-									"key": "max",
-									"value": "2",
-									"description": "Maximum results size (defaults to 100)",
-									"disabled": true
-								},
-								{
-									"key": "Username",
-									"value": "wri",
-									"description": "String contained in a username"
-								},
-								{
-									"key": "email",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "emailVerified",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "enabled",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "exact",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "firstName",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "lastName",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "search",
-									"value": null,
-									"description": "A String contained in username, first or last name, or email. Default search behavior is prefix-based (e.g., foo or foo*). Use foo for infix search and &quot;foo&quot; for exact search.",
-									"disabled": true
-								}
+								"AuthRolesTest",
+								"ReadersOnly"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Add Role to User",
+					"name": "Admins Only",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{Keycloak-Admin-Token}}",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/AuthRolesTest/AdminsOnly",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"AuthRolesTest",
+								"AdminsOnly"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Either Writers OR Admins",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "[\r\n    {\r\n        \"id\": \"c9bc2a22-59ba-4bd5-a63e-68798c29f0c4\",\r\n        \"name\": \"Reader\",\r\n        \"description\": \"Can use GET endpoints\",\r\n        \"composite\": false,\r\n        \"clientRole\": true,\r\n        \"containerId\": \"38f3017b-ca7f-4adc-91f1-e0810c99a4db\"\r\n    }\r\n]",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/users/{{Keycloak-UUID-app_user_test}}/role-mappings/clients/{{Keycloak-UUID-dev-lab}}",
+							"raw": "http://localhost:5198/AuthRolesTest/AdminOrWriters",
+							"protocol": "http",
 							"host": [
-								"{{Keycloak-Url}}"
+								"localhost"
 							],
+							"port": "5198",
 							"path": [
-								"admin",
-								"realms",
-								"{{Keycloak-Realm}}",
-								"users",
-								"{{Keycloak-UUID-app_user_test}}",
-								"role-mappings",
-								"clients",
-								"{{Keycloak-UUID-dev-lab}}"
+								"AuthRolesTest",
+								"AdminOrWriters"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Roles",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Both Read AND Writers Required",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{Keycloak-Admin-Token}}",
+									"value": "{{access_token}}",
 									"type": "string"
 								}
 							]
 						},
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/clients/{{Keycloak-UUID-dev-lab}}/roles",
+							"raw": "http://localhost:5198/AuthRolesTest/ReadAndWriters",
+							"protocol": "http",
 							"host": [
-								"{{Keycloak-Url}}"
+								"localhost"
 							],
+							"port": "5198",
 							"path": [
-								"admin",
-								"realms",
-								"{{Keycloak-Realm}}",
-								"clients",
-								"{{Keycloak-UUID-dev-lab}}",
-								"roles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Role Details",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{Keycloak-Admin-Token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\t\"username\": \"app_user_test\",\r\n\t\"firstName\": \"app_user_firstname\",\r\n\t\"lastName\": \"app_user_lastname\",\r\n\t\"email\": \"app_user@test.fr\",\r\n\t\"emailVerified\": true,\r\n\t\"enabled\": true,\r\n\t\"credentials\": [\r\n\t\t{\r\n\t\t\t\"temporary\": false,\r\n\t\t\t\"type\": \"password\",\r\n\t\t\t\"value\": \"mypassword\"\r\n\t\t}\r\n\t]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{Keycloak-Url}}/admin/realms/{{Keycloak-Realm}}/clients/{{Keycloak-UUID-dev-lab}}/roles/Reader",
-							"host": [
-								"{{Keycloak-Url}}"
-							],
-							"path": [
-								"admin",
-								"realms",
-								"{{Keycloak-Realm}}",
-								"clients",
-								"{{Keycloak-UUID-dev-lab}}",
-								"roles",
-								"Reader"
-							],
-							"query": [
-								{
-									"key": "role",
-									"value": "dev-reader",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Client-admin token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.collectionVariables.set(\"Keycloak-Admin-Token\", pm.response.json().access_token);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "grant_type",
-									"value": "client_credentials",
-									"type": "text"
-								},
-								{
-									"key": "client_id",
-									"value": "dev-lab-admin-client",
-									"type": "text"
-								},
-								{
-									"key": "client_secret",
-									"value": "u5u4R9WqgqrNJq1YPyURrkizOt7Rr5J5",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{Keycloak-Url}}/realms/master/protocol/openid-connect/token",
-							"host": [
-								"{{Keycloak-Url}}"
-							],
-							"path": [
-								"realms",
-								"master",
-								"protocol",
-								"openid-connect",
-								"token"
+								"AuthRolesTest",
+								"ReadAndWriters"
 							]
 						}
 					},
@@ -776,12 +783,17 @@
 	],
 	"variable": [
 		{
+			"key": "Web-Api-Url",
+			"value": "",
+			"type": "string"
+		},
+		{
 			"key": "access_token",
-			"value": "xxx"
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3bkZvU21xVEFGaE9EZ0NXNmxyQ3VFS0hOUEc5U2JIdDZYclQ0aFhHYUcwIn0.eyJleHAiOjE3MTc0MzA2MDIsImlhdCI6MTcxNzQzMDMwMiwianRpIjoiNmY1MWUyMGQtMTUwOS00MWNiLTg3NTYtOTk2ODI2NDYwYjY2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9kZXYtbGFiIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjU5ZTYxNjRlLTVhYWItNDExNS1iODQ4LTMyYjI3NjA1MDI5NCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImRldi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiZjM2NTgwZDItNmQ5ZC00MzYzLWJiNjQtNTRjMGY4MWYwZGI5IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZGVmYXVsdC1yb2xlcy1kZXYtbGFiIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImRldi1jbGllbnQiOnsicm9sZXMiOlsiUmVhZGVyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgRGV2Q2xpZW50U2NvcGUgZW1haWwiLCJzaWQiOiJmMzY1ODBkMi02ZDlkLTQzNjMtYmI2NC01NGMwZjgxZjBkYjkiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkRldmVyZXV4IFVzZXJhbmQiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJkZXYtcmVhZGVyIiwiZ2l2ZW5fbmFtZSI6IkRldmVyZXV4IiwiZmFtaWx5X25hbWUiOiJVc2VyYW5kIiwiZW1haWwiOiJkZXYudXNlcjNAZW1haWwuZWllaW8ifQ.o_h4-V7piw_AHfaRMdNuhD80gXlej5EK2ch6an_CkLbCzzCBPp1G2h9vJg6lwq9qzP3UEzCHfywDlvbs5ec-w7fSwx2eHQgNK4VIOato6R1z1hewqLBHi79AYkXhvaxasJPUkHY18vd9oKqJ0gCM2pGOSvrR8_3xo3pCCBB0ayXudJT5054uEIeGFHVw26WfelbNeNvdzTh5sJktTdHT3tvnZUy89lAEWxXal7rfWv273AOfxo383JDw7wvP24cjmgOi1bdlHa1g6Ot-4_tlIlhsGKhwEUTCLijspWw-34jxqVy5OvtyMjF86dSeUHMd7_S0aq_FGp3w-Yi1viSwIw"
 		},
 		{
 			"key": "Token-Source",
-			"value": ""
+			"value": "Reader"
 		},
 		{
 			"key": "Keycloak-Url",
@@ -794,14 +806,8 @@
 			"type": "string"
 		},
 		{
-			"key": "Admin-Token",
-			"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpdmJTdkl3Y0VBbmQwR3RHOFhISjlrWS1FZ05LZFQtT2NYUjM2bzJXcWhrIn0.eyJleHAiOjE3MTUzODkyMDQsImlhdCI6MTcxNTM4OTE0NCwianRpIjoiY2IwOGM2NDYtYTE4My00ZDFjLWE4MzgtMThjZTZlNjhmMzU5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9tYXN0ZXIiLCJhdWQiOlsiVGVzdC1SZWFsbS1yZWFsbSIsIkNsZWFuLUNydWQtcmVhbG0iLCJkZXYtbGFiLXJlYWxtIiwibWFzdGVyLXJlYWxtIiwiYWNjb3VudCJdLCJzdWIiOiJhNWI5OTBlZS05NTIxLTQ3NGYtYmM2Ny04MDA0OTA5ZWM0MjkiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJkZXYtbGFiLWFkbWluLWNsaWVudCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImNyZWF0ZS1yZWFsbSIsImRlZmF1bHQtcm9sZXMtbWFzdGVyIiwib2ZmbGluZV9hY2Nlc3MiLCJhZG1pbiIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiVGVzdC1SZWFsbS1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsInZpZXctcmVhbG0iLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwiQ2xlYW4tQ3J1ZC1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsInZpZXctcmVhbG0iLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwiZGV2LWxhYi1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LXJlYWxtIiwidmlldy1pZGVudGl0eS1wcm92aWRlcnMiLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwibWFzdGVyLXJlYWxtIjp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwiY3JlYXRlLWNsaWVudCIsIm1hbmFnZS11c2VycyIsInF1ZXJ5LXJlYWxtcyIsInZpZXctYXV0aG9yaXphdGlvbiIsInF1ZXJ5LWNsaWVudHMiLCJxdWVyeS11c2VycyIsIm1hbmFnZS1ldmVudHMiLCJtYW5hZ2UtcmVhbG0iLCJ2aWV3LWV2ZW50cyIsInZpZXctdXNlcnMiLCJ2aWV3LWNsaWVudHMiLCJtYW5hZ2UtYXV0aG9yaXphdGlvbiIsIm1hbmFnZS1jbGllbnRzIiwicXVlcnktZ3JvdXBzIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJjbGllbnRIb3N0IjoiMTcyLjE5LjAuMSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LWRldi1sYWItYWRtaW4tY2xpZW50IiwiY2xpZW50QWRkcmVzcyI6IjE3Mi4xOS4wLjEiLCJjbGllbnRfaWQiOiJkZXYtbGFiLWFkbWluLWNsaWVudCJ9.dWFjRVTdk3xOeNZz4dw2d9-jiyMWKnN_IBqJfsjAXlyFCxQmvzX7jf9sfAqVqzX_O4SBnLqnNCFEhaQFBMp_ARDNeHGLS7r86tVUYq_pIykctoai71arJGH6n1A2w_bMGKPK_4TGjB9INt0anMarZruJkkxoZLAo-rqQHa2cxN83jBTR8FeIFnrRCcklvW_f9n8V9BU3W4UcaTPPrd53YhXqC-qR1sC5AhOt9OdbdHw6_bUxim5XhjgDnhFpk07iC_kG3zzEnWMzfWPOqb_hX0plJlFp4chDR8X3Vq6lHIUwssoxo43mc-OscjPL7SjWqUqwR3r_bcP0ZJupw1kd6g",
-			"type": "string",
-			"disabled": true
-		},
-		{
 			"key": "Keycloak-Admin-Token",
-			"value": ""
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpdmJTdkl3Y0VBbmQwR3RHOFhISjlrWS1FZ05LZFQtT2NYUjM2bzJXcWhrIn0.eyJleHAiOjE3MTcxMTIzNzIsImlhdCI6MTcxNzExMjMxMiwianRpIjoiNTVlMjEwMGEtZGIzYS00ZGI2LWJiOTEtMjhlMTk4YmRjODQ5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9tYXN0ZXIiLCJhdWQiOlsiVGVzdC1SZWFsbS1yZWFsbSIsIkNsZWFuLUNydWQtcmVhbG0iLCJkZXYtbGFiLXJlYWxtIiwibWFzdGVyLXJlYWxtIiwiYWNjb3VudCJdLCJzdWIiOiJhNWI5OTBlZS05NTIxLTQ3NGYtYmM2Ny04MDA0OTA5ZWM0MjkiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJkZXYtbGFiLWFkbWluLWNsaWVudCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImNyZWF0ZS1yZWFsbSIsImRlZmF1bHQtcm9sZXMtbWFzdGVyIiwib2ZmbGluZV9hY2Nlc3MiLCJhZG1pbiIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiVGVzdC1SZWFsbS1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsInZpZXctcmVhbG0iLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwiQ2xlYW4tQ3J1ZC1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LWlkZW50aXR5LXByb3ZpZGVycyIsInZpZXctcmVhbG0iLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwiZGV2LWxhYi1yZWFsbSI6eyJyb2xlcyI6WyJ2aWV3LXJlYWxtIiwidmlldy1pZGVudGl0eS1wcm92aWRlcnMiLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJxdWVyeS1yZWFsbXMiLCJ2aWV3LWF1dGhvcml6YXRpb24iLCJxdWVyeS1jbGllbnRzIiwicXVlcnktdXNlcnMiLCJtYW5hZ2UtZXZlbnRzIiwibWFuYWdlLXJlYWxtIiwidmlldy1ldmVudHMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwibWFuYWdlLWF1dGhvcml6YXRpb24iLCJtYW5hZ2UtY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyJdfSwibWFzdGVyLXJlYWxtIjp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwiY3JlYXRlLWNsaWVudCIsIm1hbmFnZS11c2VycyIsInF1ZXJ5LXJlYWxtcyIsInZpZXctYXV0aG9yaXphdGlvbiIsInF1ZXJ5LWNsaWVudHMiLCJxdWVyeS11c2VycyIsIm1hbmFnZS1ldmVudHMiLCJtYW5hZ2UtcmVhbG0iLCJ2aWV3LWV2ZW50cyIsInZpZXctdXNlcnMiLCJ2aWV3LWNsaWVudHMiLCJtYW5hZ2UtYXV0aG9yaXphdGlvbiIsIm1hbmFnZS1jbGllbnRzIiwicXVlcnktZ3JvdXBzIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJjbGllbnRIb3N0IjoiMTcyLjE5LjAuMSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LWRldi1sYWItYWRtaW4tY2xpZW50IiwiY2xpZW50QWRkcmVzcyI6IjE3Mi4xOS4wLjEiLCJjbGllbnRfaWQiOiJkZXYtbGFiLWFkbWluLWNsaWVudCJ9.Vjq4MgQY7EAhs7oPlHrdEBiKcL36ajVY-n1Bq7rcp3j_55ELCmqjNGAe21kvmJdsXt5LsQch7ah6jJur6ufoPLzwwClPb7J5t-p6ALTCudF8Vs5uRib90aeQACjV3C710fkzMvp_Wh_U4SlIP80WRqsMcNymtAeQo6Vo3hcLIQ_4tBFzwPs07UAzybC_Y-mZXOURamOlxFC-0Ik5YaypvCOH_m-zAdCA0RWVIZiyuj4tVIBecLEcb28_fYRVrwP9HnOTeL4TYppofoLdVXbU3854gK0GAjoQkv5bmZqOdI-p3SOmvHnsMxHy9fXfbvEMdiy0OCp98QTB-7CxvIW3yQ"
 		},
 		{
 			"key": "Keycloak-UUID-dev-lab",

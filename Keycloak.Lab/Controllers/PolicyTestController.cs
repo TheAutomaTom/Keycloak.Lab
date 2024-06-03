@@ -5,12 +5,11 @@ namespace Keycloak.Lab.Controllers
 {
   [ApiController]
   [Route("[controller]/[action]")]
-  public class AuthRolesTestController : ControllerBase
+  public class PolicyTestController : ControllerBase
   {
+    readonly ILogger<PolicyTestController> _logger;
 
-    private readonly ILogger<AuthRolesTestController> _logger;
-
-    public AuthRolesTestController(ILogger<AuthRolesTestController> logger)
+    public PolicyTestController(ILogger<PolicyTestController> logger)
     {
       _logger = logger;
     }

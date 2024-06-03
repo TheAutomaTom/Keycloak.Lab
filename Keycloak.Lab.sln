@@ -12,6 +12,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Keycloak.Lab", "Keycloak.Lab\Keycloak.Lab.csproj", "{F16135EF-8322-4C21-8FB8-787D25AC5A95}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{0AAA4766-39A8-428B-B6C1-1F188626B8D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ContainerSetup", "ContainerSetup", "{BBD9CEB6-0A4D-4CC5-820D-085302393554}"
+	ProjectSection(SolutionItems) = preProject
+		Keycloak.Lab\Container-Setup\.env = Keycloak.Lab\Container-Setup\.env
+		Keycloak.Lab\Container-Setup\Compose.yaml = Keycloak.Lab\Container-Setup\Compose.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,7 +35,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F16135EF-8322-4C21-8FB8-787D25AC5A95} = {FDBF6AB4-E22A-4E5C-8089-E4E10A7A3AA9}
+		{F16135EF-8322-4C21-8FB8-787D25AC5A95} = {0AAA4766-39A8-428B-B6C1-1F188626B8D2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9939B5A5-EB88-4580-B8E2-6B12076B6A82}
